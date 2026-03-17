@@ -1,16 +1,16 @@
 resource "snowflake_database" "data_product" {
-  name    = var.database_name
+  name    = "${var.environment}_data_product_db"
   comment = "Demo data product database managed by Terraform."
 }
 
 resource "snowflake_warehouse" "data_product" {
-  name                      = var.warehouse_name
-  warehouse_size            = var.warehouse_size
-  auto_suspend              = var.warehouse_auto_suspend
-  auto_resume               = true
-  initially_suspended       = true
+  name                         = "${var.environment}_data_product_db_wh"
+  warehouse_size               = "xsmall"
+  auto_suspend                 = 60
+  auto_resume                  = true
+  initially_suspended          = true
   statement_timeout_in_seconds = 600
-  comment                   = "Demo data product warehouse managed by Terraform."
+  comment                      = "Demo data product warehouse managed by Terraform."
 }
 
 resource "snowflake_schema" "schemas" {
