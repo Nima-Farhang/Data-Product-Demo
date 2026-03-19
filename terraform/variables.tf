@@ -14,6 +14,12 @@ variable "snowflake_username" {
   sensitive   = true
 }
 
+variable "svc_dbt_data_product_password" {
+  description = "DBT user password for Snowflake authentication."
+  type        = string
+  sensitive   = true
+}
+
 variable "snowflake_password" {
   description = "Terraform user password for Snowflake authentication."
   type        = string

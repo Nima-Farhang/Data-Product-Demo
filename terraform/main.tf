@@ -13,10 +13,38 @@ resource "snowflake_warehouse" "data_product" {
   comment                      = "Demo data product warehouse managed by Terraform."
 }
 
+locals {
+  svc_dbt_data_product_login_name = "SVC_${upper(var.environment)}_DBT_DATA_PRODUCT"
+}
+
+
 resource "snowflake_schema" "schemas" {
   for_each = toset(var.schemas)
 
   database = snowflake_database.data_product.name
   name     = each.value
   comment  = "${each.value} schema for the demo data product."
+}
+
+resource "snowflake_user" "svc_dbt_data_product" {
+  name         = local.svc_dbt_data_product_login_name
+  login_name   = local.svc_dbt_data_product_login_name
+  display_name = local.svc_dbt_data_product_login_name
+  comment      = "Service user for the data product dbt workload."
+  password     = var.svc_dbt_data_product_password
+}
+
+resource "snowflake_grant_account_role" "svc_dbt_data_product_sysadmin" {
+  role_name = "SYSADMIN"
+  user_name = snowflake_user.svc_dbt_data_product.name
+}
+
+resource "snowflake_grant_account_role" "svc_dbt_data_product_accountadmin" {
+  role_name = "ACCOUNTADMIN"
+  user_name = snowflake_user.svc_dbt_data_product.name
+}
+
+resource "snowflake_grant_account_role" "svc_dbt_data_product_useradmin" {
+  role_name = "USERADMIN"
+  user_name = snowflake_user.svc_dbt_data_product.name
 }
