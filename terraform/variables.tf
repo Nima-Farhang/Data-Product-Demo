@@ -29,7 +29,7 @@ variable "snowflake_password" {
 variable "environment" {
   description = "Environment name used in object names."
   type        = string
-  default     = "dev"
+  default     = "DEV"
 }
 
 
@@ -37,4 +37,10 @@ variable "schemas" {
   description = "Schemas to create in the demo database."
   type        = list(string)
   default     = ["RAW", "ANALYTICS", "APP"]
+}
+
+variable "grant_account_role" {
+  description = "The roles that are granted to a user"
+  type        = list(string)
+  default     = ["SYSADMIN", "ACCOUNTADMIN", "USERADMIN"]
 }

@@ -1,10 +1,10 @@
 resource "snowflake_database" "data_product" {
-  name    = "${var.environment}_data_product_db"
+  name    = "${var.environment}_DATA_PRODUCT_DB"
   comment = "Demo data product database managed by Terraform."
 }
 
 resource "snowflake_warehouse" "data_product" {
-  name                         = "${var.environment}_data_product_db_wh"
+  name                         = "${var.environment}_DATA_PRODUCT_DB_WH"
   warehouse_size               = "xsmall"
   auto_suspend                 = 60
   auto_resume                  = true
@@ -14,7 +14,7 @@ resource "snowflake_warehouse" "data_product" {
 }
 
 locals {
-  svc_dbt_data_product_login_name = "SVC_${upper(var.environment)}_DBT_DATA_PRODUCT"
+  svc_dbt_data_product_login_name = "SVC_${upper(var.environment)}_DBT_data_product"
 }
 
 
@@ -34,17 +34,11 @@ resource "snowflake_user" "svc_dbt_data_product" {
   password     = var.svc_dbt_data_product_password
 }
 
-resource "snowflake_grant_account_role" "svc_dbt_data_product_sysadmin" {
-  role_name = "SYSADMIN"
+resource "snowflake_grant_account_role" "svc_dbt_data_product_grants" {
+  for_each = toset(var.grant_account_role)
+
+  role_name = each.value
   user_name = snowflake_user.svc_dbt_data_product.name
+
 }
 
-resource "snowflake_grant_account_role" "svc_dbt_data_product_accountadmin" {
-  role_name = "ACCOUNTADMIN"
-  user_name = snowflake_user.svc_dbt_data_product.name
-}
-
-resource "snowflake_grant_account_role" "svc_dbt_data_product_useradmin" {
-  role_name = "USERADMIN"
-  user_name = snowflake_user.svc_dbt_data_product.name
-}
