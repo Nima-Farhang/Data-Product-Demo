@@ -19,5 +19,6 @@
         "editor.formatOnSave": true
       }
     }
-  }
+  },
+  "postCreateCommand": "bash /workspaces/Data-Product-Demo/.devcontainer/init.sh"
 }
