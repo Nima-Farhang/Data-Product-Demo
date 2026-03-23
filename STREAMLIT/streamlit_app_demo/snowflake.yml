@@ -1,0 +1,8 @@
+definition_version: 1
+streamlit:
+  name: PRACTICE
+  database: DEV_DATA_PRODUCT_DB
+  schema: RAW
+  query_warehouse: DEV_DATA_PRODUCT_DB_WH
+  main_file: streamlit_app_demo.py
+  env_file: environment.yml
