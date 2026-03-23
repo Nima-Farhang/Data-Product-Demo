@@ -32,3 +32,21 @@ data_product_demo:
 EOL
 
 cat ~/.dbt/profiles.yml
+
+## creating a .snowflake file with the required content for snowflake cli to work
+cat <<EOL > ~/.snowflake
+
+[cli.logs]
+save_logs = true
+path = "/home/vscode/.snowflake/logs"
+level = "info"
+
+[connections.default]
+accountname = ${SNOWFLAKE_ACCOUNT}
+username = SVC_DEV_DBT_DATA_PRODUCT
+password = ${DBT_DATA_PRODUCT_PASS}
+role = ACCOUNTADMIN
+warehousename = DEV_DATA_PRODUCT_DB_WH
+databasename = DEV_DATA_PRODUCT_DB
+schemaname = RAW
+EOL 
