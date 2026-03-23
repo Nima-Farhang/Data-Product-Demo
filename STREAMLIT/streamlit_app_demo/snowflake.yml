@@ -1,6 +1,6 @@
 definition_version: 1
 streamlit:
-  name: PRACTICE
+  name: STREAMLIT_APP_DEMO
   database: DEV_DATA_PRODUCT_DB
   schema: RAW
   query_warehouse: DEV_DATA_PRODUCT_DB_WH
