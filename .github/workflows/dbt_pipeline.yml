@@ -6,7 +6,7 @@ on:
       - master
     paths:
       - "DBT/data_product_demo/**"
-      - ".github/dbt_pipeline.yml"
+      - ".github/workflows/dbt_pipeline.yml"
   workflow_dispatch:
 
 permissions:
