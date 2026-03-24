@@ -30,7 +30,6 @@ clean-targets: # directories to be removed by `dbt clean`
 models:
   data_product_demo:
     # Config indicated by + and applies to all files under models/example/
-    example:
-      +materialized: view
     data_product:
-      +materialized: table
+      ANALYTICS:
+        +schema: ANALYTICS
