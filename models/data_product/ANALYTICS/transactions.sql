@@ -1,4 +1,4 @@
-{{ config(materialized='table',alias='APP_SAMPLE_TABLE') }}
+{{ config(materialized='table',alias='TRANSACTIONS') }}
 
 with source_data as (
 
