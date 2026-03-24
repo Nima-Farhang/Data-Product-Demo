@@ -22,11 +22,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Configure git identity
-        run: |
-          git config --global user.email "nima@farhang.io"
-          git config --global user.name "Nima-Farhang"
-
       - name: Prepare dbt_prod worktree
         run: |
           git fetch origin dbt_prod || true
@@ -50,6 +45,8 @@ jobs:
       - name: Commit and push changes
         run: |
           cd /tmp/dbt_prod
+          git config user.email "nima@farhang.io"
+          git config user.name "Nima-Farhang"
           git add --all
 
           if git diff --cached --quiet; then
