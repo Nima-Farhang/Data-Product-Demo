@@ -1,7 +1,0 @@
-dbt-core==1.11.7
-dbt-snowflake==1.10.2
-snowflake-cli==3.7.1
-streamlit==1.55.0
-pyarrow<19
-chardet>=5,<6
-setuptools>=78

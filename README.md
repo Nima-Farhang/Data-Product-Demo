@@ -1,34 +1,18 @@
-# Data-Product-Demo# Data Product Demo (Snowflake + dbt + Streamlit)
+Welcome to your new dbt project!
 
-A self-contained, end-to-end data product built in a single repository to demonstrate a modern data platform for small companies.
+### Using the starter project
 
-## Overview
+Try running the following commands:
 
-This project showcases how to design, build, and deploy a simple data product using:
+- dbt run .
+- dbt test
 
-- **Snowflake** – data platform
-- **dbt** – data transformation and modeling
-- **Snowflake Streamlit** – data application layer
-- **Terraform** – infrastructure as code
-- **GitHub Actions** – CI/CD automation
-- **GitHub Codespaces** – development environment
+### Resources:
 
-## Repository Structure
+- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
+- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
+- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
+- Find [dbt events](https://events.getdbt.com) near you
+- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
 
-- .devcontainer # Codespaces environment
-- .github # CI/CD workflows
-- Terraform # Snowflake infrastructure
-- DBT # Data models and transformations
-- Streamlit # Data application
-
-
-
-## Purpose
-
-- Demonstrate a **production-style data product**
-- Provide a **simple, reproducible architecture**
-- Serve as a **portfolio project** for modern data platforms
-
-## Scope
-
-This is a demo project designed for learning and demonstration purposes.
+test
