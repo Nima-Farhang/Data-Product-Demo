@@ -1,18 +1,64 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
 echo "Running init script..."
 
-# Set environment variables for Terraform and DBT
-echo "export TF_VAR_snowflake_username=\"$SNOWFLAKE_TERRAFORM_USER\"" >> ~/.bashrc
-echo "export TF_VAR_snowflake_password=\"$SNOWFLAKE_TERRAFORM_PASS\"" >> ~/.bashrc
-echo "export TF_VAR_snowflake_organization_name=\"$SNOWFLAKE_ORGANIZATION_NAME\"" >> ~/.bashrc
-echo "export TF_VAR_snowflake_account_name=\"$SNOWFLAKE_ACCOUNT_NAME\"" >> ~/.bashrc
-echo "export TF_VAR_svc_dbt_data_product_password=\"$DBT_DATA_PRODUCT_PASS\"" >> ~/.bashrc
+BASHRC_FILE="${HOME}/.bashrc"
+DBT_DIRECTORY="${HOME}/.dbt"
+SNOWFLAKE_DIRECTORY="${HOME}/.snowflake"
+AWS_DIRECTORY="${HOME}/.aws"
 
-#  Set up DBT profiles.yml
-mkdir -p ~/.dbt
-cat <<EOL > ~/.dbt/profiles.yml
+# Validate required input variables
+required_variables=(
+  SNOWFLAKE_TERRAFORM_USER
+  SNOWFLAKE_TERRAFORM_PASS
+  SNOWFLAKE_ORGANIZATION_NAME
+  SNOWFLAKE_ACCOUNT_NAME
+  SNOWFLAKE_ACCOUNT
+  DBT_DATA_PRODUCT_PASS
+  AWS_ACCESS_KEY_ID
+  AWS_SECRET_ACCESS_KEY
+  SANDPIT_ACCOUNT_ID
+)
+
+for variable_name in "${required_variables[@]}"; do
+  if [[ -z "${!variable_name:-}" ]]; then
+    echo "Error: required environment variable '${variable_name}' is not set."
+    exit 1
+  fi
+done
+
+# Set variables for the current shell process
+export TF_VAR_snowflake_username="${SNOWFLAKE_TERRAFORM_USER}"
+export TF_VAR_snowflake_password="${SNOWFLAKE_TERRAFORM_PASS}"
+export TF_VAR_snowflake_organization_name="${SNOWFLAKE_ORGANIZATION_NAME}"
+export TF_VAR_snowflake_account_name="${SNOWFLAKE_ACCOUNT_NAME}"
+export TF_VAR_svc_dbt_data_product_password="${DBT_DATA_PRODUCT_PASS}"
+
+# Safely replace or append export lines in ~/.bashrc
+update_bashrc_export() {
+  local variable_name="$1"
+  local variable_value="$2"
+
+  if grep -q "^export ${variable_name}=" "${BASHRC_FILE}"; then
+    sed -i "s|^export ${variable_name}=.*$|export ${variable_name}='${variable_value}'|" "${BASHRC_FILE}"
+  else
+    echo "export ${variable_name}='${variable_value}'" >> "${BASHRC_FILE}"
+  fi
+}
+
+update_bashrc_export "TF_VAR_snowflake_username" "${SNOWFLAKE_TERRAFORM_USER}"
+update_bashrc_export "TF_VAR_snowflake_password" "${SNOWFLAKE_TERRAFORM_PASS}"
+update_bashrc_export "TF_VAR_snowflake_organization_name" "${SNOWFLAKE_ORGANIZATION_NAME}"
+update_bashrc_export "TF_VAR_snowflake_account_name" "${SNOWFLAKE_ACCOUNT_NAME}"
+update_bashrc_export "TF_VAR_svc_dbt_data_product_password" "${DBT_DATA_PRODUCT_PASS}"
+
+echo "Terraform environment variables updated in current shell and ${BASHRC_FILE}"
+
+# Set up DBT profiles.yml
+mkdir -p "${DBT_DIRECTORY}"
+
+cat > "${DBT_DIRECTORY}/profiles.yml" <<EOF
 data_product_demo:
   outputs:
     dev:
@@ -26,16 +72,18 @@ data_product_demo:
       user: SVC_DEV_DBT_DATA_PRODUCT
       warehouse: DEV_DATA_PRODUCT_DB_WH
   target: dev
-EOL
+EOF
 
-cat ~/.dbt/profiles.yml
+echo "Created ${DBT_DIRECTORY}/profiles.yml"
+cat "${DBT_DIRECTORY}/profiles.yml"
 
 # Set up Snowflake CLI config
-mkdir -p ~/.snowflake/logs
-cat <<EOL > ~/.snowflake/config.toml
+mkdir -p "${SNOWFLAKE_DIRECTORY}/logs"
+
+cat > "${SNOWFLAKE_DIRECTORY}/config.toml" <<EOF
 [cli.logs]
 save_logs = true
-path = "/home/vscode/.snowflake/logs"
+path = "${SNOWFLAKE_DIRECTORY}/logs"
 level = "info"
 
 [connections.default]
@@ -46,34 +94,40 @@ role = "ACCOUNTADMIN"
 warehouse = "DEV_DATA_PRODUCT_DB_WH"
 database = "DEV_DATA_PRODUCT_DB"
 schema = "RAW"
-EOL
+EOF
 
-cat ~/.snowflake/config.toml
-chmod 0600 ~/.snowflake/config.toml
+chmod 0600 "${SNOWFLAKE_DIRECTORY}/config.toml"
+
+echo "Created ${SNOWFLAKE_DIRECTORY}/config.toml"
+cat "${SNOWFLAKE_DIRECTORY}/config.toml"
 
 # Set up AWS CLI credentials
-AWS_CREDENTIALS_FILE="${HOME}/.aws/credentials"
-mkdir -p "$(dirname "$AWS_CREDENTIALS_FILE")"
+mkdir -p "${AWS_DIRECTORY}"
 
-cat > "$AWS_CREDENTIALS_FILE" <<EOF
+cat > "${AWS_DIRECTORY}/credentials" <<EOF
 [default]
 aws_access_key_id=${AWS_ACCESS_KEY_ID}
 aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}
 EOF
 
-echo "AWS CLI credentials for account '${SANDPIT_ACCOUNT_ID}' configured at ${AWS_CREDENTIALS_FILE}."
-cat $AWS_CREDENTIALS_FILE
-
-
-AWS_CONFIG_FILE="${HOME}/.aws/config"
-mkdir -p "$(dirname "$AWS_CONFIG_FILE")"
-
-cat > "$AWS_CONFIG_FILE" <<EOF
+cat > "${AWS_DIRECTORY}/config" <<EOF
 [default]
 region = ap-southeast-2
 output = json
 EOF
 
-echo "AWS CLI configuration configured at ${AWS_CONFIG_FILE}."
+chmod 0600 "${AWS_DIRECTORY}/credentials" "${AWS_DIRECTORY}/config"
 
-cat $AWS_CONFIG_FILE
+echo "AWS CLI credentials for account '${SANDPIT_ACCOUNT_ID}' configured at ${AWS_DIRECTORY}/credentials"
+cat "${AWS_DIRECTORY}/credentials"
+
+echo "AWS CLI configuration configured at ${AWS_DIRECTORY}/config"
+cat "${AWS_DIRECTORY}/config"
+
+echo
+echo "Init script completed."
+echo "Note: if you ran this script normally, reload your shell with:"
+echo "  source ~/.bashrc"
+echo
+echo "Check the Terraform password variable with:"
+echo "  echo \"\$TF_VAR_svc_dbt_data_product_password\""
