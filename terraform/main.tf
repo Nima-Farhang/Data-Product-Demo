@@ -14,7 +14,7 @@ resource "snowflake_warehouse" "data_product" {
 }
 
 locals {
-  svc_dbt_data_product_login_name = "SVC_${upper(var.environment)}_DBT_data_product"
+  svc_dbt_data_product_login_name = "SVC_${upper(var.environment)}_DBT_DATA_PRODUCT"
 }
 
 
