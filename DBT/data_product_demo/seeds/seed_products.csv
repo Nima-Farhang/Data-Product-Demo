@@ -1,0 +1,9 @@
+product_id,product_name,category,base_price_nzd
+PROD001,Analytics Starter,Subscription,299
+PROD002,Operations Dashboard,Subscription,799
+PROD003,Revenue Insights,Subscription,1299
+PROD004,Platform Health Check,One-Off Service,499
+PROD005,Data Quality Review,One-Off Service,1299
+PROD006,Managed Data Support,Managed Service,299
+PROD007,Executive KPI Pack,Subscription,4999
+PROD008,Pipeline Monitoring,Managed Service,4999

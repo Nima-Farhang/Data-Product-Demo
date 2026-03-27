@@ -1,0 +1,21 @@
+customer_id,customer_name,segment,industry,region,customer_status,contract_start_date
+CUST001,Blue Retail,Small Business,Hospitality,Christchurch,Active,2024-08-16
+CUST002,South Foods,Small Business,Hospitality,Tauranga,Active,2025-03-08
+CUST003,North Retail,Small Business,Healthcare,Wellington,Active,2025-07-28
+CUST004,South Foods,Mid Market,Healthcare,Hamilton,Active,2024-01-07
+CUST005,Green Trades,Small Business,Hospitality,Hamilton,Active,2024-10-11
+CUST006,South Clinic,Mid Market,Retail,Auckland,Paused,2024-04-09
+CUST007,Pacific Trades,Mid Market,Logistics,Christchurch,Active,2025-04-15
+CUST008,Summit Retail,Mid Market,Retail,Tauranga,Active,2025-01-05
+CUST009,Summit Clinic,Small Business,Retail,Wellington,Active,2024-03-22
+CUST010,Green Clinic,Small Business,Construction,Christchurch,Paused,2025-01-08
+CUST011,South Advisory,Mid Market,Healthcare,Christchurch,Active,2024-06-24
+CUST012,Summit Foods,Small Business,Healthcare,Hamilton,Paused,2024-10-03
+CUST013,Blue Foods,Small Business,Hospitality,Christchurch,Active,2024-08-22
+CUST014,Green Retail,Mid Market,Construction,Christchurch,Active,2024-08-04
+CUST015,Summit Foods,Mid Market,Healthcare,Hamilton,Paused,2025-04-14
+CUST016,South Advisory,Small Business,Healthcare,Tauranga,Active,2025-08-21
+CUST017,Harbour Logistics,Mid Market,Professional Services,Wellington,Active,2025-06-05
+CUST018,Harbour Retail,Small Business,Retail,Wellington,Active,2025-03-08
+CUST019,Summit Retail,Mid Market,Construction,Tauranga,Paused,2025-06-25
+CUST020,Pacific Logistics,Small Business,Hospitality,Auckland,Active,2024-12-14
