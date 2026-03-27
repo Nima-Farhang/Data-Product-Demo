@@ -1,0 +1,81 @@
+ticket_id,opened_date,closed_date,customer_id,issue_type,priority,status,owner_team
+TICK0001,2025-11-18,2025-11-21,CUST013,Access request,Low,Resolved,Data Engineering
+TICK0002,2026-01-19,2026-01-21,CUST012,Data freshness,High,Closed,Platform
+TICK0003,2026-01-09,,CUST003,Enhancement request,Medium,In Progress,Data Engineering
+TICK0004,2026-02-19,,CUST012,Enhancement request,Low,In Progress,Data Engineering
+TICK0005,2025-12-23,2025-12-26,CUST001,Data freshness,Medium,Resolved,Analytics
+TICK0006,2025-12-15,2025-12-21,CUST014,Data freshness,Low,Resolved,Analytics
+TICK0007,2026-02-26,2026-02-28,CUST001,Pipeline failure,Critical,Resolved,Analytics
+TICK0008,2026-02-12,2026-02-20,CUST004,Data freshness,Low,Closed,Analytics
+TICK0009,2026-01-02,2026-01-08,CUST004,Access request,Medium,Closed,Data Engineering
+TICK0010,2025-12-14,2025-12-18,CUST011,Dashboard bug,Low,Resolved,Data Engineering
+TICK0011,2025-12-08,,CUST004,Pipeline failure,Medium,Open,Analytics
+TICK0012,2026-02-23,2026-02-26,CUST019,Pipeline failure,High,Resolved,Analytics
+TICK0013,2026-01-10,2026-01-16,CUST010,Data freshness,Medium,Resolved,Data Engineering
+TICK0014,2026-01-13,2026-01-17,CUST012,Data freshness,Low,Resolved,Analytics
+TICK0015,2025-12-19,2025-12-25,CUST019,Access request,Medium,Resolved,Platform
+TICK0016,2026-03-10,2026-03-13,CUST003,Enhancement request,Medium,Resolved,Data Engineering
+TICK0017,2026-02-04,2026-02-06,CUST012,Access request,Critical,Resolved,Data Engineering
+TICK0018,2025-11-25,2025-11-29,CUST011,Enhancement request,Medium,Closed,Data Engineering
+TICK0019,2025-11-21,2025-11-25,CUST011,Pipeline failure,Medium,Closed,Data Engineering
+TICK0020,2025-11-22,2025-11-29,CUST020,Enhancement request,Medium,Closed,Data Engineering
+TICK0021,2026-03-11,2026-03-15,CUST014,Pipeline failure,Medium,Resolved,Data Engineering
+TICK0022,2025-12-06,2025-12-13,CUST008,Enhancement request,Low,Resolved,Data Engineering
+TICK0023,2026-02-05,2026-02-10,CUST020,Pipeline failure,Low,Resolved,Analytics
+TICK0024,2026-02-22,2026-02-25,CUST008,Pipeline failure,Medium,Closed,Data Engineering
+TICK0025,2026-02-21,2026-02-26,CUST012,Enhancement request,Medium,Closed,Data Engineering
+TICK0026,2025-11-14,2025-11-20,CUST009,Data freshness,Medium,Closed,Analytics
+TICK0027,2025-12-12,2025-12-17,CUST003,Access request,Medium,Closed,Data Engineering
+TICK0028,2025-11-14,2025-11-17,CUST014,Data freshness,Medium,Resolved,Analytics
+TICK0029,2026-01-25,2026-01-28,CUST004,Dashboard bug,High,Closed,Platform
+TICK0030,2026-02-23,2026-02-25,CUST016,Enhancement request,Medium,Closed,Platform
+TICK0031,2026-03-16,,CUST020,Pipeline failure,Medium,Open,Platform
+TICK0032,2026-02-26,2026-03-08,CUST020,Dashboard bug,Low,Resolved,Platform
+TICK0033,2026-01-14,2026-01-17,CUST005,Data freshness,Medium,Closed,Platform
+TICK0034,2025-11-18,2025-11-18,CUST012,Access request,Critical,Resolved,Analytics
+TICK0035,2026-01-31,2026-02-01,CUST001,Access request,High,Closed,Data Engineering
+TICK0036,2026-01-30,2026-02-06,CUST002,Dashboard bug,Medium,Resolved,Data Engineering
+TICK0037,2026-02-26,2026-03-04,CUST003,Access request,Low,Resolved,Platform
+TICK0038,2026-03-20,2026-03-27,CUST013,Data freshness,Medium,Resolved,Platform
+TICK0039,2026-01-09,2026-01-17,CUST011,Pipeline failure,Low,Resolved,Analytics
+TICK0040,2026-03-08,2026-03-11,CUST006,Data freshness,High,Closed,Analytics
+TICK0041,2025-12-17,2025-12-19,CUST020,Access request,Medium,Closed,Analytics
+TICK0042,2026-02-18,2026-02-28,CUST020,Access request,Low,Closed,Platform
+TICK0043,2026-01-10,2026-01-12,CUST014,Dashboard bug,Medium,Resolved,Data Engineering
+TICK0044,2026-02-21,2026-02-25,CUST005,Enhancement request,Low,Resolved,Data Engineering
+TICK0045,2025-12-10,2025-12-14,CUST020,Enhancement request,High,Resolved,Analytics
+TICK0046,2026-01-20,,CUST013,Enhancement request,Medium,In Progress,Analytics
+TICK0047,2025-12-01,2025-12-08,CUST018,Access request,Medium,Closed,Platform
+TICK0048,2025-12-22,2025-12-26,CUST016,Data freshness,Low,Resolved,Platform
+TICK0049,2026-01-28,2026-01-30,CUST011,Dashboard bug,High,Closed,Analytics
+TICK0050,2025-12-28,,CUST017,Enhancement request,Low,Open,Platform
+TICK0051,2026-02-28,2026-03-01,CUST012,Pipeline failure,High,Resolved,Platform
+TICK0052,2026-02-13,,CUST014,Pipeline failure,High,Open,Platform
+TICK0053,2026-01-28,2026-02-02,CUST017,Data freshness,Low,Closed,Data Engineering
+TICK0054,2025-12-10,2025-12-14,CUST017,Enhancement request,Medium,Closed,Analytics
+TICK0055,2026-01-04,2026-01-11,CUST003,Enhancement request,Low,Resolved,Platform
+TICK0056,2025-12-10,,CUST006,Enhancement request,Low,Open,Analytics
+TICK0057,2026-02-15,2026-02-20,CUST007,Pipeline failure,Medium,Closed,Data Engineering
+TICK0058,2026-01-16,2026-01-19,CUST013,Dashboard bug,Medium,Resolved,Analytics
+TICK0059,2025-12-07,,CUST020,Access request,Medium,In Progress,Platform
+TICK0060,2025-11-28,,CUST018,Data freshness,Medium,In Progress,Data Engineering
+TICK0061,2026-02-07,2026-02-09,CUST010,Access request,High,Closed,Data Engineering
+TICK0062,2026-03-08,,CUST006,Pipeline failure,Critical,Open,Platform
+TICK0063,2026-01-01,2026-01-09,CUST015,Pipeline failure,Low,Resolved,Analytics
+TICK0064,2025-11-03,2025-11-06,CUST018,Pipeline failure,High,Resolved,Analytics
+TICK0065,2026-02-11,2026-02-17,CUST002,Pipeline failure,Low,Resolved,Platform
+TICK0066,2025-12-01,2025-12-05,CUST009,Access request,Low,Resolved,Data Engineering
+TICK0067,2026-03-11,2026-03-13,CUST007,Pipeline failure,Medium,Closed,Platform
+TICK0068,2025-12-09,2025-12-13,CUST015,Enhancement request,Medium,Resolved,Platform
+TICK0069,2026-01-26,2026-02-02,CUST010,Access request,Medium,Closed,Analytics
+TICK0070,2026-02-15,2026-02-21,CUST004,Enhancement request,Medium,Closed,Platform
+TICK0071,2025-11-14,2025-11-20,CUST008,Dashboard bug,Medium,Closed,Data Engineering
+TICK0072,2025-11-29,2025-12-09,CUST019,Dashboard bug,Low,Resolved,Analytics
+TICK0073,2026-03-01,,CUST017,Access request,High,In Progress,Platform
+TICK0074,2026-03-15,2026-03-20,CUST016,Access request,Medium,Resolved,Platform
+TICK0075,2025-12-20,2025-12-20,CUST016,Access request,Critical,Closed,Analytics
+TICK0076,2026-03-06,,CUST007,Enhancement request,Medium,In Progress,Analytics
+TICK0077,2026-01-28,2026-01-29,CUST013,Data freshness,Critical,Closed,Analytics
+TICK0078,2026-01-05,2026-01-08,CUST015,Dashboard bug,High,Closed,Data Engineering
+TICK0079,2026-01-01,,CUST020,Access request,Low,In Progress,Platform
+TICK0080,2025-11-26,2025-11-28,CUST016,Pipeline failure,High,Closed,Analytics
