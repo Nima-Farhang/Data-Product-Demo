@@ -1,0 +1,87 @@
+version: 2
+
+seeds:
+  - name: seed_customers
+    columns:
+      - name: customer_id
+        tests: [not_null, unique]
+
+  - name: seed_products
+    columns:
+      - name: product_id
+        tests: [not_null, unique]
+
+  - name: seed_orders
+    columns:
+      - name: order_id
+        tests: [not_null, unique]
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('seed_customers')
+              field: customer_id
+      - name: product_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('seed_products')
+              field: product_id
+
+  - name: seed_support_tickets
+    columns:
+      - name: ticket_id
+        tests: [not_null, unique]
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('seed_customers')
+              field: customer_id
+
+models:
+  - name: stg_customers
+    columns:
+      - name: customer_id
+        tests: [not_null, unique]
+
+  - name: stg_products
+    columns:
+      - name: product_id
+        tests: [not_null, unique]
+
+  - name: stg_orders
+    columns:
+      - name: order_id
+        tests: [not_null, unique]
+
+  - name: stg_support_tickets
+    columns:
+      - name: ticket_id
+        tests: [not_null, unique]
+
+  - name: dim_customers
+    columns:
+      - name: customer_id
+        tests: [not_null, unique]
+
+  - name: dim_products
+    columns:
+      - name: product_id
+        tests: [not_null, unique]
+
+  - name: fct_orders
+    columns:
+      - name: order_id
+        tests: [not_null, unique]
+
+  - name: fct_support_tickets
+    columns:
+      - name: ticket_id
+        tests: [not_null, unique]
+
+  - name: mart_sales_overview
+    description: "Aggregated sales metrics for the demo commercial dashboard."
+
+  - name: mart_support_overview
+    description: "Aggregated support metrics for the demo operations dashboard."
