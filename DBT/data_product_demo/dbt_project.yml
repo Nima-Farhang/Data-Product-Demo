@@ -14,13 +14,12 @@ clean-targets:
   - "dbt_packages"
 
 models:
-  data_product_demo:
-    staging:
-      +schema: ANALYTICS
-      +materialized: view
-    marts:
-      +schema: ANALYTICS
-      +materialized: table
+  staging:
+    +schema: ANALYTICS
+    +materialized: view
+  marts:
+    +schema: ANALYTICS
+    +materialized: table
 
 seeds:
   data_product_demo:
