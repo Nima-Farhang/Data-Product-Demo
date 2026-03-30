@@ -1,7 +1,15 @@
-resource "snowflake_database" "data_product" {
-  name    = "${var.environment}_DATA_PRODUCT_DB"
-  comment = "Demo data product database managed by Terraform."
+locals {
+  svc_dbt_data_product_login_name = "SVC_${upper(var.environment)}_DBT_DATA_PRODUCT"
 }
+
+resource "snowflake_resource_monitor" "data_product" {
+  name                      = "${var.environment}_DATA_PRODUCT_RESOURCE_MONITOR"
+  credit_quota              = var.resource_monitor_credit_quota
+  frequency                 = "MONTHLY"
+  start_timestamp           = "2026-04-01"
+  suspend_immediate_trigger = var.resource_monitor_credit_quota
+}
+
 
 resource "snowflake_warehouse" "data_product" {
   name                         = "${var.environment}_DATA_PRODUCT_DB_WH"
@@ -10,11 +18,13 @@ resource "snowflake_warehouse" "data_product" {
   auto_resume                  = true
   initially_suspended          = true
   statement_timeout_in_seconds = 600
+  resource_monitor             = snowflake_resource_monitor.data_product.name
   comment                      = "Demo data product warehouse managed by Terraform."
 }
 
-locals {
-  svc_dbt_data_product_login_name = "SVC_${upper(var.environment)}_DBT_DATA_PRODUCT"
+resource "snowflake_database" "data_product" {
+  name    = "${var.environment}_DATA_PRODUCT_DB"
+  comment = "Demo data product database managed by Terraform."
 }
 
 
@@ -39,6 +49,4 @@ resource "snowflake_grant_account_role" "svc_dbt_data_product_grants" {
 
   role_name = each.value
   user_name = snowflake_user.svc_dbt_data_product.name
-
 }
-

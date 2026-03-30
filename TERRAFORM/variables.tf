@@ -44,3 +44,9 @@ variable "grant_account_role" {
   type        = list(string)
   default     = ["SYSADMIN", "ACCOUNTADMIN", "USERADMIN"]
 }
+
+variable "resource_monitor_credit_quota" {
+  type        = number
+  description = "Credit quota for the Snowflake resource monitor."
+  default     = 10
+}
