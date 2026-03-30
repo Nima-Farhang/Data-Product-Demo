@@ -1,0 +1,8 @@
+definition_version: 1
+streamlit:
+  name: SERVICE_OPS
+  database: DEV_DATA_PRODUCT_DB
+  schema: APP
+  query_warehouse: DEV_DATA_PRODUCT_DB_WH
+  main_file: app.py
+  env_file: environment.yml

@@ -36,7 +36,7 @@ variable "environment" {
 variable "schemas" {
   description = "Schemas to create in the demo database."
   type        = list(string)
-  default     = ["RAW", "ANALYTICS", "APP"]
+  default     = ["RAW", "STAGING", "INTERMEDIATE", "ANALYTICS", "APP"]
 }
 
 variable "grant_account_role" {
