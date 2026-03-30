@@ -15,7 +15,7 @@ clean-targets:
 
 models:
   staging:
-    +schema: ANALYTICS
+    +schema: STAGING
     +materialized: view
   marts:
     +schema: ANALYTICS
