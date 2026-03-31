@@ -2,7 +2,7 @@
 
 This folder creates the initial Snowflake foundation for the demo data product:
 
-- 1 database
+- 1 database.
 - 1 warehouse
 - 5 schemas (`RAW`, `STAGING`, `INTERMEDIATE`, `ANALYTICS`, `APP`)
 
