@@ -48,14 +48,14 @@ jobs:
             outputs:
               prod:
                 account: ${SNOWFLAKE_ACCOUNT}
-                database: PROD_DATA_PRODUCT_DB
+                database: ${ENVIRONMENT}_DATA_PRODUCT_DB
                 password: ${DBT_DATA_PRODUCT_PASS}
                 role: ACCOUNTADMIN
                 schema: RAW
                 threads: 1
                 type: snowflake
                 user: SVC_${ENVIRONMENT}_DBT_DATA_PRODUCT
-                warehouse: PROD_DATA_PRODUCT_DB_WH
+                warehouse: ${ENVIRONMENT}_DATA_PRODUCT_DB_WH
             target: prod
           EOF
 
