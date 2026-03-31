@@ -3,7 +3,7 @@
 This folder creates the initial Snowflake foundation for the demo data product:
 
 - 1 database.
-- 1 warehouse
+- 1 warehouse.
 - 5 schemas (`RAW`, `STAGING`, `INTERMEDIATE`, `ANALYTICS`, `APP`)
 
 Credentials are not stored in code. Terraform reads the Snowflake username and password from Codespaces secrets through environment variables.
