@@ -1,0 +1,81 @@
+name: Terraform CI
+
+on:
+  pull_request:
+    paths:
+      - "TERRAFORM/**"
+      - ".github/workflows/terraform.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "TERRAFORM/**"
+      - ".github/workflows/terraform.yml"
+
+jobs:
+  terraform-plan:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: TERRAFORM
+
+    env:
+      TF_VAR_snowflake_username: ${{ secrets.SNOWFLAKE_TERRAFORM_USER }}
+      TF_VAR_snowflake_password: ${{ secrets.SNOWFLAKE_TERRAFORM_PASS }}
+      TF_VAR_snowflake_organization_name: ${{ secrets.SNOWFLAKE_ORGANIZATION_NAME }}
+      TF_VAR_snowflake_account_name: ${{ secrets.SNOWFLAKE_ACCOUNT_NAME }}
+      TF_VAR_svc_dbt_data_product_password: ${{ secrets.DBT_DATA_PRODUCT_PASS }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive
+
+      - name: Terraform init
+        run: terraform init -reconfigure -backend-config=backend-prod.hcl
+
+      - name: Terraform validate
+        run: terraform validate
+
+      - name: Terraform plan
+        run: terraform plan -var-file=environments/prod.tfvars
+
+  terraform-apply-prod:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: terraform-plan
+    runs-on: ubuntu-latest
+    environment: prod
+
+    defaults:
+      run:
+        working-directory: TERRAFORM
+
+    env:
+      TF_VAR_snowflake_username: ${{ secrets.SNOWFLAKE_TERRAFORM_USER }}
+      TF_VAR_snowflake_password: ${{ secrets.SNOWFLAKE_TERRAFORM_PASS }}
+      TF_VAR_snowflake_organization_name: ${{ secrets.SNOWFLAKE_ORGANIZATION_NAME }}
+      TF_VAR_snowflake_account_name: ${{ secrets.SNOWFLAKE_ACCOUNT_NAME }}
+      TF_VAR_svc_dbt_data_product_password: ${{ secrets.DBT_DATA_PRODUCT_PASS }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init
+        run: terraform init -reconfigure -backend-config=backend-prod.hcl
+
+      - name: Terraform apply
+        run: terraform apply -auto-approve -var-file=environments/prod.tfvars
