@@ -26,10 +26,15 @@ variable "snowflake_password" {
   sensitive   = true
 }
 
+variable "resource_monitor_credit_quota" {
+  type        = number
+  description = "Credit quota for the Snowflake resource monitor."
+  default     = 10
+}
+
 variable "environment" {
   description = "Environment name used in object names."
   type        = string
-  default     = "DEV"
 }
 
 
@@ -39,14 +44,20 @@ variable "schemas" {
   default     = ["RAW", "STAGING", "INTERMEDIATE", "ANALYTICS", "APP"]
 }
 
-variable "grant_account_role" {
-  description = "The roles that are granted to a user"
-  type        = list(string)
-  default     = ["SYSADMIN", "ACCOUNTADMIN", "USERADMIN"]
+variable "warehouse_size" {
+  description = "Warehouse size for the demo data product warehouse."
+  type        = string
+  default     = "xsmall"
 }
 
-variable "resource_monitor_credit_quota" {
+variable "warehouse_auto_suspend" {
+  description = "Auto suspend time in seconds for the demo data product warehouse."
   type        = number
-  description = "Credit quota for the Snowflake resource monitor."
-  default     = 10
+  default     = 60
+}
+
+variable "grant_account_roles" {
+  description = "The roles that are granted to a user"
+  type        = list(string)
+  default     = ["SYSADMIN"]
 }

@@ -7,9 +7,11 @@ BASHRC_FILE="${HOME}/.bashrc"
 DBT_DIRECTORY="${HOME}/.dbt"
 SNOWFLAKE_DIRECTORY="${HOME}/.snowflake"
 AWS_DIRECTORY="${HOME}/.aws"
+ENVIRONMENT_LOWER=$(echo "${ENVIRONMENT}" | tr '[:upper:]' '[:lower:]')
 
 # Validate required input variables
 required_variables=(
+  ENVIRONMENT
   SNOWFLAKE_TERRAFORM_USER
   SNOWFLAKE_TERRAFORM_PASS
   SNOWFLAKE_ORGANIZATION_NAME
@@ -61,21 +63,20 @@ mkdir -p "${DBT_DIRECTORY}"
 cat > "${DBT_DIRECTORY}/profiles.yml" <<EOF
 data_product_demo:
   outputs:
-    dev:
+    ${ENVIRONMENT_LOWER}:
       account: ${SNOWFLAKE_ACCOUNT}
-      database: DEV_DATA_PRODUCT_DB
+      database: ${ENVIRONMENT}_DATA_PRODUCT_DB
       password: ${DBT_DATA_PRODUCT_PASS}
       role: ACCOUNTADMIN
       schema: RAW
       threads: 1
       type: snowflake
-      user: SVC_DEV_DBT_DATA_PRODUCT
-      warehouse: DEV_DATA_PRODUCT_DB_WH
-  target: dev
+      user: SVC_${ENVIRONMENT}_DBT_DATA_PRODUCT
+      warehouse: ${ENVIRONMENT}_DATA_PRODUCT_DB_WH
+  target: ${ENVIRONMENT_LOWER}
 EOF
 
 echo "Created ${DBT_DIRECTORY}/profiles.yml"
-cat "${DBT_DIRECTORY}/profiles.yml"
 
 # Set up Snowflake CLI config
 mkdir -p "${SNOWFLAKE_DIRECTORY}/logs"
@@ -88,18 +89,17 @@ level = "info"
 
 [connections.default]
 account = "${SNOWFLAKE_ACCOUNT}"
-user = "SVC_DEV_DBT_DATA_PRODUCT"
+user = "SVC_${ENVIRONMENT}_DBT_DATA_PRODUCT"
 password = "${DBT_DATA_PRODUCT_PASS}"
 role = "ACCOUNTADMIN"
-warehouse = "DEV_DATA_PRODUCT_DB_WH"
-database = "DEV_DATA_PRODUCT_DB"
+warehouse = "${ENVIRONMENT}_DATA_PRODUCT_DB_WH"
+database = "${ENVIRONMENT}_DATA_PRODUCT_DB"
 schema = "RAW"
 EOF
 
 chmod 0600 "${SNOWFLAKE_DIRECTORY}/config.toml"
 
 echo "Created ${SNOWFLAKE_DIRECTORY}/config.toml"
-cat "${SNOWFLAKE_DIRECTORY}/config.toml"
 
 # Set up AWS CLI credentials
 mkdir -p "${AWS_DIRECTORY}"
@@ -119,10 +119,8 @@ EOF
 chmod 0600 "${AWS_DIRECTORY}/credentials" "${AWS_DIRECTORY}/config"
 
 echo "AWS CLI credentials for account '${SANDPIT_ACCOUNT_ID}' configured at ${AWS_DIRECTORY}/credentials"
-cat "${AWS_DIRECTORY}/credentials"
 
 echo "AWS CLI configuration configured at ${AWS_DIRECTORY}/config"
-cat "${AWS_DIRECTORY}/config"
 
 echo
 echo "Init script completed."

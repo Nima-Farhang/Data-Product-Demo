@@ -1,5 +1,7 @@
-locals {
-  svc_dbt_data_product_login_name = "SVC_${upper(var.environment)}_DBT_DATA_PRODUCT"
+
+resource "snowflake_database" "data_product" {
+  name    = "${var.environment}_DATA_PRODUCT_DB"
+  comment = "Demo data product database managed by Terraform."
 }
 
 resource "snowflake_resource_monitor" "data_product" {
@@ -10,11 +12,10 @@ resource "snowflake_resource_monitor" "data_product" {
   suspend_immediate_trigger = var.resource_monitor_credit_quota
 }
 
-
 resource "snowflake_warehouse" "data_product" {
   name                         = "${var.environment}_DATA_PRODUCT_DB_WH"
-  warehouse_size               = "xsmall"
-  auto_suspend                 = 60
+  warehouse_size               = var.warehouse_size
+  auto_suspend                 = var.warehouse_auto_suspend
   auto_resume                  = true
   initially_suspended          = true
   statement_timeout_in_seconds = 600
@@ -22,11 +23,9 @@ resource "snowflake_warehouse" "data_product" {
   comment                      = "Demo data product warehouse managed by Terraform."
 }
 
-resource "snowflake_database" "data_product" {
-  name    = "${var.environment}_DATA_PRODUCT_DB"
-  comment = "Demo data product database managed by Terraform."
+locals {
+  svc_dbt_data_product_login_name = "SVC_${upper(var.environment)}_DBT_DATA_PRODUCT"
 }
-
 
 resource "snowflake_schema" "schemas" {
   for_each = toset(var.schemas)
@@ -45,8 +44,9 @@ resource "snowflake_user" "svc_dbt_data_product" {
 }
 
 resource "snowflake_grant_account_role" "svc_dbt_data_product_grants" {
-  for_each = toset(var.grant_account_role)
+  for_each = toset(var.grant_account_roles)
 
   role_name = each.value
   user_name = snowflake_user.svc_dbt_data_product.name
+
 }
