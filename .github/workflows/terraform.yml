@@ -1,13 +1,13 @@
 name: Terraform CI
 
 on:
-  # pull_request:
-  #   paths:
-  #     - "TERRAFORM/**"
-  #     - ".github/workflows/terraform.yml"
+  pull_request:
+    paths:
+      - "TERRAFORM/**"
+      - ".github/workflows/terraform.yml"
   push:
     branches:
-      - main
+      - master
     paths:
       - "TERRAFORM/**"
       - ".github/workflows/terraform.yml"
