@@ -1,62 +1,125 @@
-name: Publish DBT Project
+name: DBT CI
 
 on:
+  pull_request:
+    paths:
+      - "DBT/data_product_demo/**"
+      - ".github/workflows/dbt_pipeline.yml"
   push:
     branches:
       - master
     paths:
       - "DBT/data_product_demo/**"
       - ".github/workflows/dbt_pipeline.yml"
-  workflow_dispatch:
-
-permissions:
-  contents: write
 
 jobs:
-  publish-dbt-project:
+  dbt-validate:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: DBT/data_product_demo
+
+    env:
+      ENVIRONMENT: PROD
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      DBT_DATA_PRODUCT_PASS: ${{ secrets.DBT_DATA_PRODUCT_PASS }}
+
     steps:
-      - name: Check out source branch
+      - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          fetch-depth: 0
+          python-version: "3.12"
 
-      - name: Prepare dbt_prod worktree
+      - name: Install dbt
         run: |
-          git fetch origin dbt_prod || true
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install dbt-core dbt-snowflake
 
-          if git ls-remote --exit-code --heads origin dbt_prod >/dev/null 2>&1; then
-            git worktree add /tmp/dbt_prod origin/dbt_prod
-          else
-            git worktree add -b dbt_prod /tmp/dbt_prod
-            cd /tmp/dbt_prod
-            git commit --allow-empty -m "Initialize dbt_prod branch"
-            git push --set-upstream origin dbt_prod
-          fi
-
-      - name: Sync DBT project into dbt_prod
+      - name: Create dbt profile
         run: |
-          rsync -av --delete \
-            --exclude ".git" \
-            --exclude ".github" \
-            DBT/data_product_demo/ /tmp/dbt_prod/
+          mkdir -p ~/.dbt
+          cat > ~/.dbt/profiles.yml <<EOF
+          data_product_demo:
+            outputs:
+              prod:
+                account: ${SNOWFLAKE_ACCOUNT}
+                database: PROD_DATA_PRODUCT_DB
+                password: ${DBT_DATA_PRODUCT_PASS}
+                role: ACCOUNTADMIN
+                schema: RAW
+                threads: 1
+                type: snowflake
+                user: SVC_${ENVIRONMENT}_DBT_DATA_PRODUCT
+                warehouse: PROD_DATA_PRODUCT_DB_WH
+            target: prod
+          EOF
 
-      - name: Commit and push changes
+      - name: dbt deps
+        run: dbt deps
+
+      - name: dbt compile
+        run: dbt compile
+
+  dbt-prod-run:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    environment: prod
+
+    defaults:
+      run:
+        working-directory: DBT/data_product_demo
+
+    env:
+      ENVIRONMENT: PROD
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      DBT_DATA_PRODUCT_PASS: ${{ secrets.DBT_DATA_PRODUCT_PASS }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dbt
         run: |
-          cd /tmp/dbt_prod
-          git config user.email "nima@farhang.io"
-          git config user.name "Nima Farhang"
-          git add --all
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install dbt-core dbt-snowflake
 
-          if git diff --cached --quiet; then
-            echo "No changes to publish"
-            exit 0
-          fi
+      - name: Create dbt profile
+        run: |
+          mkdir -p ~/.dbt
+          cat > ~/.dbt/profiles.yml <<EOF
+          data_product_demo:
+            outputs:
+              prod:
+                account: ${SNOWFLAKE_ACCOUNT}
+                database: PROD_DATA_PRODUCT_DB
+                password: ${DBT_DATA_PRODUCT_PASS}
+                role: ACCOUNTADMIN
+                schema: RAW
+                threads: 1
+                type: snowflake
+                user: SVC_${ENVIRONMENT}_DBT_DATA_PRODUCT
+                warehouse: PROD_DATA_PRODUCT_DB_WH
+            target: prod
+          EOF
 
-          git commit -m "Publish DBT project from ${GITHUB_SHA}"
-          git push origin HEAD:dbt_prod
+      - name: dbt deps
+        run: dbt deps
 
-      - name: Clean up worktree
-        if: always()
-        run: git worktree remove /tmp/dbt_prod --force
+      - name: dbt seed
+        run: dbt seed
+
+      - name: dbt run
+        run: dbt run
+
+      - name: dbt test
+        run: dbt test
