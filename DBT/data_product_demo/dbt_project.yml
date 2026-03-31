@@ -1,9 +1,11 @@
 name: "data_product_demo"
-version: "1.0.0"
+version: "1.0"
+config-version: 2
+
 profile: "data_product_demo"
 
 model-paths: ["models"]
-analysis-paths: ["analyses"]
+analysis-paths: ["analysis"]
 test-paths: ["tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
@@ -14,12 +16,14 @@ clean-targets:
   - "dbt_packages"
 
 models:
-  staging:
-    +schema: STAGING
-    +materialized: view
-  marts:
-    +schema: ANALYTICS
-    +materialized: table
+  data_product_demo:
+    staging:
+      +schema: STAGING
+      +materialized: view
+
+    marts:
+      +schema: ANALYTICS
+      +materialized: table
 
 seeds:
   data_product_demo:
