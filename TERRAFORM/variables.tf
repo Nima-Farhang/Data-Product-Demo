@@ -41,7 +41,7 @@ variable "environment" {
 variable "schemas" {
   description = "Schemas to create in the demo database."
   type        = list(string)
-  default     = ["RAW", "STAGING", "INTERMEDIATE", "ANALYTICS", "APP"]
+  default     = ["RAW", "STAGING", "WORK", "ANALYTICS", "APP"]
 }
 
 variable "warehouse_size" {
