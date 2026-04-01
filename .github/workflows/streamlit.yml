@@ -5,6 +5,7 @@ on:
     paths:
       - "STREAMLIT/**"
       - ".github/workflows/streamlit.yml"
+
   push:
     branches:
       - master
@@ -13,10 +14,8 @@ on:
       - ".github/workflows/streamlit.yml"
 
 jobs:
-  streamlit-deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+  streamlit-prepare:
     runs-on: ubuntu-latest
-    environment: prod
 
     env:
       ENVIRONMENT: PROD
@@ -63,6 +62,21 @@ jobs:
 
       - name: Test Snowflake connection
         run: snow connection test
+
+  streamlit-deploy:
+    needs: streamlit-prepare
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    environment: prod # ← approval happens here
+
+    env:
+      ENVIRONMENT: PROD
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      DBT_DATA_PRODUCT_PASS: ${{ secrets.DBT_DATA_PRODUCT_PASS }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Deploy Streamlit apps
         run: bash STREAMLIT/deploy_streamlit_apps.sh
