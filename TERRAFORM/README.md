@@ -1,27 +1,75 @@
-# Terraform - Snowflake foundation
+# Terraform
 
-This folder creates the initial Snowflake foundation for the demo data product:
+This folder contains the Terraform code used to provision the Snowflake infrastructure for the demo data product.
 
-- 1 database.
-- 1 warehouse.
-- 5 schemas (`RAW`, `STAGING`, `INTERMEDIATE`, `ANALYTICS`, `APP`)
+## What this layer is responsible for
 
-Credentials are not stored in code. Terraform reads the Snowflake username and password from Codespaces secrets through environment variables.
+This Terraform project is responsible for creating the core Snowflake objects needed by the rest of the repository, including:
+
+- database
+- schemas
+- warehouse
+- resource monitor
+- service user inputs and supporting objects, where applicable
 
 ## Environment model
 
-Use the same Terraform code for both DEV and PROD.
+This project is structured to support separate environments.
 
-Environment-specific values live in:
+Current environment files live in:
 
-- `environments/dev.tfvars`
-- `environments/prod.tfvars`
+```text
+environments/dev.tfvars
+environments/prod.tfvars
+```
 
-Remote state is separated by backend key:
+Backend configuration is also split by environment.
 
-- `dev/snowflake/terraform.tfstate`
-- `prod/snowflake/terraform.tfstate`
+## Main files
 
-## Approval model
+- `main.tf`  
+  Core resource definitions
 
-Use manual approval before applying to PROD in GitHub Actions.
+- `variables.tf`  
+  Input variables
+
+- `outputs.tf`  
+  Outputs for validation and debugging
+
+- `provider.tf` / `versions.tf`  
+  Provider and Terraform version config
+
+- `backend-dev.hcl` / `backend-prod.hcl`  
+  Backend configuration
+
+- `commands.md`  
+  Practical commands to run this Terraform project
+
+## How to work with this folder
+
+Use `commands.md` for exact command examples.
+
+Typical flow:
+
+```bash
+terraform init -reconfigure -backend-config=backend-dev.hcl
+terraform plan -var-file=environments/dev.tfvars
+terraform apply -var-file=environments/dev.tfvars
+```
+
+## What to change when reusing this blueprint
+
+Common changes for a new project:
+
+- warehouse size / suspend settings
+- environment tfvars values
+- naming conventions
+- grants / role design
+- resource monitor quota
+- backend bucket and key naming
+
+## Notes
+
+This layer should be treated as the foundation for the dbt and Streamlit layers.
+
+If infrastructure is wrong, the rest of the repository will fail for predictable reasons.

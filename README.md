@@ -1,155 +1,101 @@
 # Data Product Demo
 
-**Snowflake + dbt + Streamlit | Terraform | CI/CD**
+A self-contained, end-to-end data product blueprint built with Snowflake, dbt, Streamlit, Terraform, and GitHub Actions.
 
-A self-contained, production-style data product built inside a single repository to demonstrate a modern, reusable data platform blueprint suitable for small to medium-sized organizations.
+This repository is designed to show how a **small, reusable data product** can be built and deployed from a **single repository**. The idea is similar to a microservice, but applied to data: one repo contains the infrastructure, data models, application layer, and CI/CD needed to stand up one focused data product.
 
----
+## Why this project exists
 
-# Overview
+Many smaller companies do not need a large, heavily fragmented data platform to start getting value from data. They need something that is:
 
-This project demonstrates how to design, build, and deploy a fully operational data product using modern cloud-native tooling and infrastructure-as-code principles.
+- understandable
+- reproducible
+- quick to deploy
+- easy to own
+- easy to extend
 
-The core idea behind this repository is:
+This project demonstrates that pattern.
 
-A data product should be deployable, reproducible, version-controlled, and self-contained — similar to a microservice.
+It is intended as a **reference implementation** for a consultancy-style delivery model, where the same blueprint can be reused for multiple small or medium-sized data products with only limited changes to datasets, models, and app logic.
 
-Instead of large monolithic data platforms, this architecture promotes small, reusable, independently deployable data products that can be scaled across multiple business domains.
+## What this demo includes
 
-This repository acts as a reference blueprint that can be reused across different projects with minimal changes.
+- **Terraform** to provision Snowflake resources
+- **dbt** to build a layered analytics model
+- **Snowflake Streamlit** to expose business-facing apps
+- **GitHub Actions** for CI/CD across infrastructure, transformation, and app deployment
+- **GitHub Codespaces** for a reproducible development environment
 
----
+## Architecture at a glance
 
-# Core Concept — Micro Data Products
+```text
+GitHub Repository
+│
+├── TERRAFORM/
+│   └── Creates Snowflake database, schemas, warehouse, and supporting objects
+│
+├── DBT/
+│   └── Seeds, staging models, marts, and tests
+│
+├── STREAMLIT/
+│   └── App folders, one folder per app, deployed into Snowflake
+│
+└── .github/workflows/
+    └── CI/CD for Terraform, dbt, and Streamlit
+```
 
-This project is intentionally designed as:
+## Snowflake layer design
 
-Single Repository  
-= One Deployable Data Product
+This demo uses a simple layered approach:
 
-Each data product includes:
+- **RAW**: seed/input data
+- **STAGING**: source-aligned cleanup and normalization
+- **ANALYTICS**: dimensions, facts, and marts
+- **APP**: Streamlit app deployment target
 
-Infrastructure  
-Data Models  
-Application Layer  
-Deployment Pipelines
+## Repository structure
 
-This mirrors microservices architecture, but applied to data platforms.
+```text
+.devcontainer/                Codespaces setup and init script
+.github/workflows/            CI/CD workflows
 
-The goal:
+TERRAFORM/                    Snowflake infrastructure as code
+DBT/data_product_demo/        dbt project
+STREAMLIT/                    Streamlit deployment assets
+```
 
-- Smaller deployable units
-- Faster delivery cycles
-- Easier ownership
-- Lower operational overhead
-- Clear lineage and reproducibility
+## Current demo scope
 
-This pattern is especially valuable for:
+This repository currently demonstrates:
 
-- small companies
-- consultancies
-- startups
-- domain-based data ownership models
+- environment-aware Snowflake provisioning
+- dbt seed, run, and test workflows
+- multiple Streamlit apps deployed from subfolders
+- a single-repo delivery model for a reusable data product pattern
 
----
+This is a demo, but it is deliberately structured to resemble a real delivery pattern rather than a toy example.
 
-# Technology Stack
+## Recommended reading order
 
-## Data Platform
+If you are visiting this repository for the first time, start here:
 
-- Snowflake
-  - Warehouse compute
-  - Schema-layered data architecture
-  - Resource governance
+1. `QUICKSTART.md`
+2. `TERRAFORM/README.md`
+3. `DBT/data_product_demo/README.md`
+4. `STREAMLIT/README.md`
 
-## Data Transformation
+## Notes
 
-- dbt (data build tool)
-  - Staging models
-  - Dimensional modeling
-  - Data marts
-  - Testing framework
+- This project is intentionally opinionated.
+- It favors clarity and reproducibility over maximum flexibility.
+- It is meant to be a strong starting point for small-scale data product delivery, not a finished enterprise platform.
 
-## Application Layer
+## Future extensions
 
-- Snowflake Streamlit
-  - Lightweight data apps
-  - Embedded analytics
-  - Business-facing dashboards
+Likely next steps for this blueprint would be:
 
-## Infrastructure
-
-- Terraform
-  - Fully reproducible infrastructure
-  - DEV and PROD environments
-  - Schema and warehouse provisioning
-
-## CI/CD
-
-- GitHub Actions
-  - Terraform deployment pipelines
-  - dbt execution pipelines
-  - Streamlit deployment pipelines
-
-## Development Environment
-
-- GitHub Codespaces
-  - Fully containerized development
-  - Consistent developer onboarding
-
----
-
-# Repository Structure
-
-.devcontainer/  
-Codespaces environment configuration
-
-.github/  
-CI/CD workflows
-
-TERRAFORM/  
-Infrastructure as Code
-
-DBT/  
-Data transformation logic
-
-STREAMLIT/  
-Data application layer
-
----
-
-# Purpose of This Project
-
-This repository was built to demonstrate:
-
-- Real-world data platform design
-- Infrastructure automation
-- End-to-end data product lifecycle
-- CI/CD-driven data engineering
-
-It also serves as:
-
-- A portfolio artifact
-- A reusable template
-- A reference architecture
-
----
-
-# Future Enhancements
-
-Planned additions:
-
-- AWS Glue ingestion layer
-- Apache Iceberg integration
-- Multi-environment promotion workflows
-- Advanced dbt testing patterns
-- Data observability integration
-- Multi-product deployment model
-
----
-
-# Disclaimer
-
-This repository is a demonstration project intended to illustrate architecture patterns and engineering practices.
-
-It is not intended as a complete production solution without customization.
+- stronger role/grant hardening
+- app sharing automation
+- ingestion expansion through AWS Glue and Iceberg
+- richer CI/CD promotion controls
+- more advanced dbt testing and observability
