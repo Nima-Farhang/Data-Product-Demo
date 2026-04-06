@@ -6,7 +6,7 @@ This repository is designed to show how a **small, reusable data product** can b
 
 ## Why this project exists
 
-Many smaller companies do not need a large, heavily fragmented data platform to start getting value from data. They need something that is:
+Many companies do not need a large, heavily fragmented data platform to start getting value from data. They need something that is:
 
 - understandable
 - reproducible
